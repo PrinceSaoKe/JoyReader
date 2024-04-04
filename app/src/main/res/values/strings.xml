@@ -1,0 +1,10 @@
+<resources>
+    <string name="app_name">JoyReader</string>
+    <string name="title_home">主页</string>
+    <string name="title_posting">发布</string>
+    <string name="title_my">我的</string>
+    <string name="app_chinese_name">悦读</string>
+    <string name="hot">热榜</string>
+    <string name="latest">最新</string>
+    <string name="settings">设置</string>
+</resources>
