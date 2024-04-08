@@ -7,4 +7,8 @@
     <string name="hot">热榜</string>
     <string name="latest">最新</string>
     <string name="settings">设置</string>
+    <string name="avatar">头像</string>
+    <string name="username">用户名</string>
+    <string name="password">密码</string>
+    <string name="logout">切换账号</string>
 </resources>
