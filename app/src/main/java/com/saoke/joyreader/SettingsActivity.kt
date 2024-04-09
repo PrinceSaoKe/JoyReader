@@ -1,20 +1,27 @@
 package com.saoke.joyreader
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import com.saoke.joyreader.R
+import android.util.Log
 import com.saoke.joyreader.databinding.ActivitySettingsBinding
+import com.saoke.joyreader.ui.auth.AuthActivity
 
 class SettingsActivity : AppCompatActivity() {
+
+    private lateinit var binding: ActivitySettingsBinding
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_settings)
 
-        val binding = ActivitySettingsBinding.inflate(layoutInflater)
+        binding = ActivitySettingsBinding.inflate(layoutInflater)
+        setContentView(binding.root)
 
         binding.avatar.setImageResource(R.drawable.avatar)
         binding.logoutButton.setOnClickListener {
-            // TODO 跳转登录页面
+            Log.i("MyLog", "切换账号")
+            val intent = Intent(this, AuthActivity::class.java)
+            startActivity(intent)
         }
     }
 }
