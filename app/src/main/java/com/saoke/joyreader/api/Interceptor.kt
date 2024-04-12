@@ -1,5 +1,6 @@
 package com.saoke.joyreader.api
 
+import android.util.Log
 import com.tencent.mmkv.MMKV
 import okhttp3.Interceptor
 import okhttp3.Request
@@ -13,6 +14,11 @@ class Interceptor : Interceptor {
         val request: Request =
             if (token == null) chain.request()
             else chain.request().newBuilder().header("Authorization", token).build()
-        return chain.proceed(request)
+        val response = chain.proceed(request)
+        if (response.code == 401) {
+//            val intent = Intent(context, AuthActivity::class.java)
+            Log.i("MyLog", "Token失效")
+        }
+        return response
     }
 }

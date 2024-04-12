@@ -23,62 +23,24 @@ class HomeFragment : Fragment() {
 
         _binding = FragmentHomeBinding.inflate(inflater, container, false)
 
-        // 热门和最新的数据列表
-        val listFragments: List<BlogListFragment> = listOf(
-            BlogListFragment(viewModel.hotBlogList),
-            BlogListFragment(viewModel.latestBlogList),
-        )
+        viewModel.getBlogList()
 
-        binding.blogPageList.setTabsAndPages(viewModel.tabs, listFragments)
-
-//        binding.button.setOnClickListener {
-//            Retrofit.api.login(
-//                "Prince",
-//                "aaaaa"
-//            ).enqueue(object : Callback<Model<LoginModel>> {
-//                override fun onResponse(
-//                    call: Call<Model<LoginModel>>,
-//                    response: Response<Model<LoginModel>>
-//                ) {
-//                    if (response.isSuccessful) {
-//                        val model = response.body()
-//                        Log.i("MyLog", "token: ${model?.data?.token}")
-//                        MMKV.defaultMMKV().encode("token", model?.data?.token)
-//                        Log.i("MyLog", "${model?.base?.message}")
-//                    } else {
-//                        Log.i("MyLog", response.message())
-//                    }
-//                }
-//
-//                override fun onFailure(call: Call<Model<LoginModel>>, t: Throwable) {
-//                    Log.i("MyLog", "请求失败: ${t.message}")
-//                }
-//            })
-//        }
-//
-//        binding.button2.setOnClickListener {
-//            Retrofit.api.getBlog("AR963580972194992128")
-//                .enqueue(object : Callback<Model<BlogModel>> {
-//                    override fun onResponse(
-//                        call: Call<Model<BlogModel>>,
-//                        response: Response<Model<BlogModel>>
-//                    ) {
-//                        if (response.isSuccessful) {
-//                            val model = response.body()
-//                            Log.i(
-//                                "MyLog",
-//                                "标题: ${model?.data?.title}, 简介: ${model?.data?.desc}"
-//                            )
-//                        } else {
-//                            Log.i("MyLog", "${response.code()}")
-//                        }
-//                    }
-//
-//                    override fun onFailure(call: Call<Model<BlogModel>>, t: Throwable) {
-//                        Log.i("MyLog", "请求失败: ${t.message}")
-//                    }
-//                })
-//        }
+        viewModel.hotBlogList.observe(viewLifecycleOwner) {
+            // 热门和最新的数据列表
+            val listFragments: List<BlogListFragment> = listOf(
+                BlogListFragment(viewModel.hotBlogList.value ?: listOf()),
+                BlogListFragment(viewModel.latestBlogList.value ?: listOf()),
+            )
+            binding.blogPageList.setTabsAndPages(viewModel.tabs, listFragments)
+        }
+        viewModel.latestBlogList.observe(viewLifecycleOwner) {
+            // 热门和最新的数据列表
+            val listFragments: List<BlogListFragment> = listOf(
+                BlogListFragment(viewModel.hotBlogList.value ?: listOf()),
+                BlogListFragment(viewModel.latestBlogList.value ?: listOf()),
+            )
+            binding.blogPageList.setTabsAndPages(viewModel.tabs, listFragments)
+        }
 
         return binding.root
     }

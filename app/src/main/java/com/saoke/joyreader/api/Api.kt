@@ -1,5 +1,6 @@
 package com.saoke.joyreader.api
 
+import com.saoke.joyreader.logic.model.BlogListModel
 import com.saoke.joyreader.logic.model.BlogModel
 import com.saoke.joyreader.logic.model.LoginModel
 import com.saoke.joyreader.logic.model.Model
@@ -18,6 +19,12 @@ interface Api {
         @Field("username") username: String,
         @Field("password") password: String
     ): Call<Model<LoginModel>>
+
+    @GET("/article/get_list")
+    fun getBlogList(
+        @Query("page") page: Int,
+        @Query("sort") sort: Int
+    ): Call<Model<BlogListModel>>
 
     @GET("/article/get_article")
     fun getBlog(@Query("articleId") blogId: String): Call<Model<BlogModel>>

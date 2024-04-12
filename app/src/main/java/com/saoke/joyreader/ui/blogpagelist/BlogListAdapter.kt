@@ -21,7 +21,7 @@ class BlogListAdapter(private val blogList: List<BlogModel>) :
             binding.blogListItemAuthorName.text = blog.authorName
             binding.blogListItemClicks.text = "${blog.clicks}"
             binding.blogListItemLikes.text = "${blog.likes}"
-            binding.blogListItemPostTime.text = blog.postTime.format()
+            binding.blogListItemPostTime.text = blog.createTime.format()
         }
     }
 

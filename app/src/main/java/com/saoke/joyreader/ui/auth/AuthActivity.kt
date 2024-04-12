@@ -30,7 +30,12 @@ class AuthActivity : AppCompatActivity() {
                 ) {
                     if (response.isSuccessful) {
                         val model = response.body()
-                        MMKV.defaultMMKV().encode("token", model?.data?.token)
+                        val mmkv = MMKV.defaultMMKV()
+                        mmkv.encode("token", model?.data?.token)
+                        mmkv.encode("avatar_url",
+                            model?.data?.avatarUrl
+                                ?: "http://west2-work4-pany0593.oss-cn-shenzhen.aliyuncs.com/avatar/default-avatar.png"
+                        )
                         Toast.makeText(this@AuthActivity, model?.base?.message, Toast.LENGTH_SHORT)
                             .show()
                     } else {
@@ -45,7 +50,7 @@ class AuthActivity : AppCompatActivity() {
             })
         }
 
-        binding.registerButton.setOnClickListener{
+        binding.registerButton.setOnClickListener {
             // TODO 跳转注册页面
         }
     }
