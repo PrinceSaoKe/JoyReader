@@ -4,6 +4,7 @@ import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.saoke.joyreader.api.Retrofit
+import com.saoke.joyreader.constant.ViewModelStatusEnum
 import com.saoke.joyreader.logic.model.BlogListModel
 import com.saoke.joyreader.logic.model.BlogModel
 import com.saoke.joyreader.logic.model.Model
@@ -16,6 +17,8 @@ class HomeViewModel : ViewModel() {
     private val _tabs: List<String> = listOf("热门", "最新")
     val tabs: List<String> = _tabs
 
+    val status = MutableLiveData(ViewModelStatusEnum.LOADING)
+
     val hotBlogList = MutableLiveData<List<BlogModel>>(listOf())
 
     val latestBlogList = MutableLiveData<List<BlogModel>>(listOf())
@@ -23,6 +26,8 @@ class HomeViewModel : ViewModel() {
     private var currPage = 1
 
     fun getBlogList() {
+        status.value = ViewModelStatusEnum.LOADING
+
         // 获取热门列表
         Retrofit.api.getBlogList(currPage, 0)
             .enqueue(object : Callback<Model<BlogListModel>> {
@@ -32,13 +37,16 @@ class HomeViewModel : ViewModel() {
                 ) {
                     if (response.isSuccessful) {
                         hotBlogList.value = response.body()!!.data.articles
+                        status.value = ViewModelStatusEnum.FINISHED
                     } else {
                         Log.i("MyLog", "getHotBlogList：${response.code()}")
+                        status.value = ViewModelStatusEnum.ERROR
                     }
                 }
 
                 override fun onFailure(call: Call<Model<BlogListModel>>, t: Throwable) {
                     Log.i("MyLog", "请求失败: ${t.message}")
+                    status.value = ViewModelStatusEnum.ERROR
                 }
             })
 

@@ -4,7 +4,6 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.saoke.joyreader.databinding.BlogListItemBinding
-import com.saoke.joyreader.logic.extension.format
 import com.saoke.joyreader.logic.model.BlogModel
 
 class BlogListAdapter(private val blogList: List<BlogModel>) :
@@ -21,7 +20,7 @@ class BlogListAdapter(private val blogList: List<BlogModel>) :
             binding.blogListItemAuthorName.text = blog.authorName
             binding.blogListItemClicks.text = "${blog.clicks}"
             binding.blogListItemLikes.text = "${blog.likes}"
-            binding.blogListItemPostTime.text = blog.createTime.format()
+            binding.blogListItemPostTime.text = blog.createTime
         }
     }
 
