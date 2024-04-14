@@ -1,7 +1,5 @@
 package com.saoke.joyreader.logic.model
 
-import java.time.LocalDateTime
-
 data class BlogModel(
     val articleId: String,
     val authorId: String,

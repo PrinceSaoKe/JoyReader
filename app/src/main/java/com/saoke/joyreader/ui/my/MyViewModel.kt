@@ -3,7 +3,6 @@ package com.saoke.joyreader.ui.my
 import androidx.lifecycle.ViewModel
 import com.saoke.joyreader.R
 import com.saoke.joyreader.logic.model.BlogModel
-import java.time.LocalDateTime
 
 class MyViewModel : ViewModel() {
 

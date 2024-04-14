@@ -19,7 +19,6 @@ class SettingsActivity : AppCompatActivity() {
 
         binding.avatar.setImageResource(R.drawable.avatar)
         binding.logoutButton.setOnClickListener {
-            Log.i("MyLog", "切换账号")
             val intent = Intent(this, AuthActivity::class.java)
             startActivity(intent)
         }

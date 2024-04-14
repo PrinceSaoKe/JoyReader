@@ -1,8 +1,10 @@
 package com.saoke.joyreader.ui.blogpagelist
 
+import android.content.Intent
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import com.saoke.joyreader.ui.blog.BlogActivity
 import com.saoke.joyreader.databinding.BlogListItemBinding
 import com.saoke.joyreader.logic.model.BlogModel
 
@@ -37,5 +39,10 @@ class BlogListAdapter(private val blogList: List<BlogModel>) :
     /// 数据项滚动到屏幕内时执行
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         holder.bindData(blogList[position])
+        holder.itemView.setOnClickListener {
+            val intent = Intent(holder.itemView.context, BlogActivity::class.java)
+            intent.putExtra("model", blogList[position].articleId)
+            holder.itemView.context.startActivity(intent)
+        }
     }
 }
