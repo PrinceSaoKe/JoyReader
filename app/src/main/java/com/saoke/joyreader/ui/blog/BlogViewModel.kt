@@ -10,7 +10,7 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
-class BlogViewModel() : ViewModel() {
+class BlogViewModel : ViewModel() {
     val blogModel = MutableLiveData<BlogModel?>()
 
     fun getBlog(blogId: String) {
