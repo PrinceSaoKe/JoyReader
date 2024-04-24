@@ -3,9 +3,10 @@ package com.saoke.joyreader
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
+import com.bumptech.glide.Glide
 import com.saoke.joyreader.databinding.ActivitySettingsBinding
 import com.saoke.joyreader.ui.auth.AuthActivity
+import com.tencent.mmkv.MMKV
 
 class SettingsActivity : AppCompatActivity() {
 
@@ -17,7 +18,13 @@ class SettingsActivity : AppCompatActivity() {
         binding = ActivitySettingsBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        binding.avatar.setImageResource(R.drawable.avatar)
+        val mmkv = MMKV.defaultMMKV()
+        val avatarUrl = mmkv.decodeString(
+            "avatar_url",
+            "http://west2-work4-pany0593.oss-cn-shenzhen.aliyuncs.com/avatar/default-avatar.png"
+        )!!
+        Glide.with(this).load(avatarUrl).into(binding.avatar)
+
         binding.logoutButton.setOnClickListener {
             val intent = Intent(this, AuthActivity::class.java)
             startActivity(intent)
