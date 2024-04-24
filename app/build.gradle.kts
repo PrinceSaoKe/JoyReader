@@ -55,4 +55,5 @@ dependencies {
     implementation("com.squareup.retrofit2:retrofit:2.11.0")
     implementation("com.squareup.retrofit2:converter-gson:2.11.0")
     implementation("com.tencent:mmkv:1.3.4")
+    implementation("com.github.bumptech.glide:glide:5.0.0-rc01")
 }

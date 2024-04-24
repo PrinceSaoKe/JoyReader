@@ -1,16 +1,24 @@
 package com.saoke.joyreader.ui.my
 
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.saoke.joyreader.R
 import com.saoke.joyreader.logic.model.BlogModel
+import com.tencent.mmkv.MMKV
 
 class MyViewModel : ViewModel() {
 
-    private val _username = "骚客."
-    val username: String = _username
+    val username = MutableLiveData("未命名")
+    val avatarUrl =
+        MutableLiveData("http://west2-work4-pany0593.oss-cn-shenzhen.aliyuncs.com/avatar/default-avatar.png")
 
-    private val _avatar = R.drawable.avatar
-    val avatar: Int = _avatar
+    init {
+        val mmkv = MMKV.defaultMMKV()
+        username.value = mmkv.decodeString("username", "未命名")!!
+        avatarUrl.value = mmkv.decodeString(
+            "avatar_url",
+            "http://west2-work4-pany0593.oss-cn-shenzhen.aliyuncs.com/avatar/default-avatar.png"
+        )!!
+    }
 
     // TODO 测试数据
     private val _blogList: List<BlogModel> = listOf(

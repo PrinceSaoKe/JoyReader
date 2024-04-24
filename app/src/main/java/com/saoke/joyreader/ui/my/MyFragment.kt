@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import com.bumptech.glide.Glide
 import com.saoke.joyreader.SettingsActivity
 import com.saoke.joyreader.databinding.FragmentMyBinding
 import com.saoke.joyreader.ui.blogpagelist.BlogListFragment
@@ -25,8 +26,13 @@ class MyFragment : Fragment() {
 
         _binding = FragmentMyBinding.inflate(inflater, container, false)
 
-        binding.username.text = viewModel.username
-        binding.avatar.setImageResource(viewModel.avatar)
+        viewModel.username.observe(viewLifecycleOwner) {
+            binding.username.text = it
+        }
+        viewModel.avatarUrl.observe(viewLifecycleOwner) {
+            Glide.with(this).load(it).into(binding.avatar)
+        }
+
         binding.settingsButton.setOnClickListener {
             val intent = Intent(activity, SettingsActivity::class.java)
             startActivity(intent)

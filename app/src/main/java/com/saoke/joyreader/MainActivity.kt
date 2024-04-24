@@ -8,8 +8,14 @@ import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
+import com.saoke.joyreader.api.Retrofit
 import com.saoke.joyreader.databinding.ActivityMainBinding
+import com.saoke.joyreader.logic.model.Model
+import com.saoke.joyreader.logic.model.UserModel
 import com.tencent.mmkv.MMKV
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 
 class MainActivity : AppCompatActivity() {
 
@@ -20,6 +26,8 @@ class MainActivity : AppCompatActivity() {
 
         val mmkvPath = MMKV.initialize(this)
         Log.i("MyLog", "MMKV存储路径: $mmkvPath")
+
+        initData()
 
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
@@ -36,5 +44,32 @@ class MainActivity : AppCompatActivity() {
         )
         setupActionBarWithNavController(navController, appBarConfiguration)
         navView.setupWithNavController(navController)
+    }
+
+    private fun initData() {
+        Retrofit.api.getUser().enqueue(object : Callback<Model<UserModel>> {
+            override fun onResponse(
+                call: Call<Model<UserModel>>,
+                response: Response<Model<UserModel>>
+            ) {
+                if (response.isSuccessful) {
+                    val mmkv = MMKV.defaultMMKV()
+                    val userId = response.body()?.data?.userId
+                    val username = response.body()?.data?.username
+                    val avatarUrl = response.body()?.data?.avatarUrl
+                    if (userId != null) mmkv.encode("user_id", userId)
+                    if (username != null) mmkv.encode("username", username)
+                    if (avatarUrl != null) mmkv.encode("avatar_url", avatarUrl)
+                    Log.i("MyLog", "用户名：$username")
+                    Log.i("MyLog", "头像：$avatarUrl")
+                } else {
+                    Log.i("MyLog", "getUser：${response.code()}")
+                }
+            }
+
+            override fun onFailure(call: Call<Model<UserModel>>, t: Throwable) {
+                Log.i("MyLog", "请求失败: ${t.message}")
+            }
+        })
     }
 }
