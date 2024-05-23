@@ -8,16 +8,10 @@ import com.tencent.mmkv.MMKV
 class MyViewModel : ViewModel() {
 
     val username = MutableLiveData("未命名")
-    val avatarUrl =
-        MutableLiveData("http://west2-work4-pany0593.oss-cn-shenzhen.aliyuncs.com/avatar/default-avatar.png")
 
     init {
         val mmkv = MMKV.defaultMMKV()
         username.value = mmkv.decodeString("username", "未命名")!!
-        avatarUrl.value = mmkv.decodeString(
-            "avatar_url",
-            "http://west2-work4-pany0593.oss-cn-shenzhen.aliyuncs.com/avatar/default-avatar.png"
-        )!!
     }
 
     // TODO 测试数据

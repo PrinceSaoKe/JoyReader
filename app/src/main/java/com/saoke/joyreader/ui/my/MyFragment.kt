@@ -29,9 +29,6 @@ class MyFragment : Fragment() {
         viewModel.username.observe(viewLifecycleOwner) {
             binding.username.text = it
         }
-        viewModel.avatarUrl.observe(viewLifecycleOwner) {
-            Glide.with(this).load(it).into(binding.avatar)
-        }
 
         binding.settingsButton.setOnClickListener {
             val intent = Intent(activity, SettingsActivity::class.java)

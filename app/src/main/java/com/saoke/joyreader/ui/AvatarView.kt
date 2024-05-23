@@ -2,23 +2,19 @@ package com.saoke.joyreader.ui
 
 import android.content.Context
 import android.util.AttributeSet
+import com.bumptech.glide.Glide
 import com.google.android.material.imageview.ShapeableImageView
 import com.google.android.material.shape.ShapeAppearanceModel
-import com.saoke.joyreader.R
-import com.saoke.joyreader.logic.extension.dpToPx
+import com.tencent.mmkv.MMKV
 
-class AvatarView(context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0) :
-    ShapeableImageView(context, attrs, defStyleAttr) {
-    private var _size: Int = 64
-    fun setSize(size: Int) {
-        if (size <= 0) return
-        _size = size
-    }
-
+class AvatarView(context: Context, attrs: AttributeSet? = null) :
+    ShapeableImageView(context, attrs) {
     init {
-        layoutParams.width = _size.dpToPx(context)
-        layoutParams.height = _size.dpToPx(context)
-        setImageResource(R.drawable.avatar)
+        val avatarUrl = MMKV.defaultMMKV().decodeString(
+            "avatar_url",
+            "http://west2-work4-pany0593.oss-cn-shenzhen.aliyuncs.com/avatar/default-avatar.png"
+        )!!
+        Glide.with(this).load(avatarUrl).into(this)
         scaleType = ScaleType.CENTER_CROP
         shapeAppearanceModel = ShapeAppearanceModel.builder()
             .setAllCornerSizes(ShapeAppearanceModel.PILL)
