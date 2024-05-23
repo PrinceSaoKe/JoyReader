@@ -22,6 +22,7 @@ interface Api {
         @Field("password") password: String
     ): Call<Model<LoginModel>>
 
+    /// 查询用户信息
     @GET("/user/get_user")
     fun getUser(): Call<Model<UserModel>>
 
@@ -35,4 +36,12 @@ interface Api {
     /// 获取文章
     @GET("/article/get_article")
     fun getBlog(@Query("articleId") blogId: String): Call<Model<BlogModel>>
+
+    /// 查询用户发布的文章列表
+    @GET("/user/get_user_article")
+    fun getUserBlogList(): Call<Model<List<BlogModel>>>
+
+    /// 查询用户点赞的文章列表
+    @GET("/user/get_user_likes")
+    fun getLikeBlogList(): Call<Model<List<BlogModel>>>
 }

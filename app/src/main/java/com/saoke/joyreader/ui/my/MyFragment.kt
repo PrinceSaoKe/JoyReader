@@ -7,7 +7,6 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
-import com.bumptech.glide.Glide
 import com.saoke.joyreader.SettingsActivity
 import com.saoke.joyreader.databinding.FragmentMyBinding
 import com.saoke.joyreader.ui.blogpagelist.BlogListFragment
@@ -26,6 +25,24 @@ class MyFragment : Fragment() {
 
         _binding = FragmentMyBinding.inflate(inflater, container, false)
 
+        viewModel.getUserBlogList()
+        viewModel.getLikeBlogList()
+
+        viewModel.userBlogList.observe(viewLifecycleOwner) {
+            val listFragments: List<BlogListFragment> = listOf(
+                BlogListFragment(viewModel.userBlogList.value ?: listOf()),
+                BlogListFragment(viewModel.likeBlogList.value ?: listOf()),
+            )
+            binding.blogPageList.setTabsAndPages(viewModel.tabs, listFragments)
+        }
+        viewModel.likeBlogList.observe(viewLifecycleOwner) {
+            val listFragments: List<BlogListFragment> = listOf(
+                BlogListFragment(viewModel.userBlogList.value ?: listOf()),
+                BlogListFragment(viewModel.likeBlogList.value ?: listOf()),
+            )
+            binding.blogPageList.setTabsAndPages(viewModel.tabs, listFragments)
+        }
+
         viewModel.username.observe(viewLifecycleOwner) {
             binding.username.text = it
         }
@@ -34,14 +51,6 @@ class MyFragment : Fragment() {
             val intent = Intent(activity, SettingsActivity::class.java)
             startActivity(intent)
         }
-
-        // 我发布的 和 我收藏的 数据列表
-        val listFragments: List<BlogListFragment> = listOf(
-            BlogListFragment(viewModel.myPostBlogList),
-            BlogListFragment(viewModel.myLikeBlogList),
-        )
-
-        binding.blogPageList.setTabsAndPages(viewModel.tabs, listFragments)
 
         return binding.root
     }
