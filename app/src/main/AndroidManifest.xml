@@ -21,7 +21,7 @@
         <activity
             android:name=".ui.auth.AuthActivity"
             android:exported="false"
-            android:label="@string/login"
+            android:label="@string/logout"
             android:theme="@style/Theme.JoyReader" />
         <activity
             android:name=".SettingsActivity"

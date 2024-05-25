@@ -1,5 +1,6 @@
 package com.saoke.joyreader.api
 
+import com.saoke.joyreader.logic.model.BaseModel
 import com.saoke.joyreader.logic.model.BlogListModel
 import com.saoke.joyreader.logic.model.BlogModel
 import com.saoke.joyreader.logic.model.LoginModel
@@ -21,6 +22,14 @@ interface Api {
         @Field("username") username: String,
         @Field("password") password: String
     ): Call<Model<LoginModel>>
+
+    /// 注册
+    @POST("/user/register")
+    @FormUrlEncoded
+    fun register(
+        @Field("username") username: String,
+        @Field("password") password: String
+    ): Call<Model<BaseModel>>
 
     /// 查询用户信息
     @GET("/user/get_user")

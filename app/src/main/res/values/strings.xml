@@ -16,4 +16,6 @@
     <string name="register">注册</string>
     <string name="password_hint">请输入密码</string>
     <string name="hidden_password">******</string>
+    <string name="confirm_password_hint">请再次输入密码</string>
+    <string name="go_to_register">去注册</string>
 </resources>
