@@ -1,7 +1,6 @@
 package com.saoke.joyreader.ui.auth
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -11,7 +10,6 @@ import com.saoke.joyreader.api.Retrofit
 import com.saoke.joyreader.databinding.FragmentLoginBinding
 import com.saoke.joyreader.logic.model.LoginModel
 import com.saoke.joyreader.logic.model.Model
-import com.saoke.joyreader.logic.model.UserModel
 import com.tencent.mmkv.MMKV
 import retrofit2.Call
 import retrofit2.Callback
@@ -50,7 +48,7 @@ class LoginFragment : Fragment() {
                         )
                         Toast.makeText(activity, model?.base?.message, Toast.LENGTH_SHORT)
                             .show()
-                        getUser()
+                        Retrofit.getUser()
                     } else {
                         Toast.makeText(activity, response.message(), Toast.LENGTH_SHORT).show()
                     }
@@ -67,32 +65,5 @@ class LoginFragment : Fragment() {
         }
 
         return binding.root
-    }
-
-    private fun getUser() {
-        Retrofit.api.getUser().enqueue(object : Callback<Model<UserModel>> {
-            override fun onResponse(
-                call: Call<Model<UserModel>>,
-                response: Response<Model<UserModel>>
-            ) {
-                if (response.isSuccessful) {
-                    val mmkv = MMKV.defaultMMKV()
-                    val userId = response.body()?.data?.userId
-                    val username = response.body()?.data?.username
-                    val avatarUrl = response.body()?.data?.avatarUrl
-                    if (userId != null) mmkv.encode("user_id", userId)
-                    if (username != null) mmkv.encode("username", username)
-                    if (avatarUrl != null) mmkv.encode("avatar_url", avatarUrl)
-                    Log.i("MyLog", "用户名：$username")
-                    Log.i("MyLog", "头像：$avatarUrl")
-                } else {
-                    Log.i("MyLog", "getUser：${response.code()}")
-                }
-            }
-
-            override fun onFailure(call: Call<Model<UserModel>>, t: Throwable) {
-                Log.i("MyLog", "请求失败: ${t.message}")
-            }
-        })
     }
 }

@@ -3,18 +3,29 @@ package com.saoke.joyreader
 import android.Manifest
 import android.content.Intent
 import android.content.pm.PackageManager
-import android.graphics.BitmapFactory
 import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.provider.MediaStore
+import android.util.Log
+import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
+import com.saoke.joyreader.api.Retrofit
 import com.saoke.joyreader.databinding.ActivitySettingsBinding
+import com.saoke.joyreader.logic.model.Model
 import com.saoke.joyreader.ui.auth.AuthActivity
 import com.tencent.mmkv.MMKV
+import okhttp3.MediaType.Companion.toMediaTypeOrNull
+import okhttp3.MultipartBody
+import okhttp3.RequestBody.Companion.asRequestBody
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
+import java.io.File
 import java.io.FileNotFoundException
+import java.io.FileOutputStream
 
 class SettingsActivity : AppCompatActivity() {
 
@@ -33,9 +44,8 @@ class SettingsActivity : AppCompatActivity() {
             startActivity(intent)
         }
 
-        binding.avatar.setOnClickListener {
-            applyPermission()
-        }
+        binding.avatar.setOnClickListener { applyPermission() }
+        binding.avatarArrow.setOnClickListener { applyPermission() }
     }
 
     private fun applyPermission() {
@@ -85,13 +95,41 @@ class SettingsActivity : AppCompatActivity() {
         registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
             if (it.resultCode == RESULT_OK) {
                 try {
-                    val inputStream = it.data?.data?.let { it1 ->
-                        contentResolver.openInputStream(
-                            it1
-                        )
+                    it.data?.data?.let { it1 ->
+                        val inputStream = contentResolver.openInputStream(it1)
+                        val file = File(cacheDir, "new_avatar.jpg") // 创建一个临时文件用于存储图片
+                        val outputStream = FileOutputStream(file)
+                        inputStream?.copyTo(outputStream)
+                        inputStream?.close()
+                        outputStream.close()
+
+                        val requestFile =
+                            file.asRequestBody("multipart/form-data".toMediaTypeOrNull())
+                        val filePart =
+                            MultipartBody.Part.createFormData("file", file.name, requestFile)
+                        Retrofit.api.updateAvatar(filePart)
+                            .enqueue(object : Callback<Model<String>> {
+                                override fun onResponse(
+                                    call: Call<Model<String>>,
+                                    response: Response<Model<String>>
+                                ) {
+                                    if (response.isSuccessful) {
+                                        Retrofit.getUser()
+                                        Toast.makeText(
+                                            this@SettingsActivity,
+                                            response.body()!!.base.message,
+                                            Toast.LENGTH_SHORT
+                                        ).show()
+                                    } else {
+                                        Log.i("MyLog", "updateAvatar：${response.code()}")
+                                    }
+                                }
+
+                                override fun onFailure(call: Call<Model<String>>, t: Throwable) {
+                                    Log.i("MyLog", "请求失败: ${t.message}")
+                                }
+                            })
                     }
-                    val bitmap = BitmapFactory.decodeStream(inputStream)
-                    binding.avatar.setImageBitmap(bitmap)
                 } catch (e: FileNotFoundException) {
                     e.printStackTrace()
                 }
