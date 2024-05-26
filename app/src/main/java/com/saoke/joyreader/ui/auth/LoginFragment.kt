@@ -26,6 +26,11 @@ class LoginFragment : Fragment() {
         val binding = FragmentLoginBinding.inflate(layoutInflater)
 
         binding.loginButton.setOnClickListener {
+            if (binding.usernameEditText.text.isEmpty() || binding.passwordEditText.text.isEmpty()) {
+                Toast.makeText(activity, "请输入用户名和密码", Toast.LENGTH_SHORT).show()
+                return@setOnClickListener
+            }
+
             Retrofit.api.login(
                 binding.usernameEditText.text.toString(),
                 binding.passwordEditText.text.toString()
@@ -47,8 +52,7 @@ class LoginFragment : Fragment() {
                             .show()
                         getUser()
                     } else {
-                        Toast.makeText(activity, response.message(), Toast.LENGTH_SHORT)
-                            .show()
+                        Toast.makeText(activity, response.message(), Toast.LENGTH_SHORT).show()
                     }
                 }
 

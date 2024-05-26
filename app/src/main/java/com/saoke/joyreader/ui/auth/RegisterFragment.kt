@@ -46,9 +46,9 @@ class RegisterFragment : Fragment() {
                     if (response.isSuccessful) {
                         Toast.makeText(activity, response.body()!!.base.message, Toast.LENGTH_SHORT)
                             .show()
-                        if (response.body()!!.base.code == 0) (activity as AuthActivity).replaceFragment(
-                            LoginFragment()
-                        )
+                        if (response.body()!!.base.code == 0) {
+                            (activity as AuthActivity).replaceFragment(LoginFragment())
+                        }
                     } else {
                         Toast.makeText(activity, response.message(), Toast.LENGTH_SHORT).show()
                     }
