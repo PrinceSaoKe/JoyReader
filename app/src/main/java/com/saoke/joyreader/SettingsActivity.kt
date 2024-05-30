@@ -8,8 +8,11 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.provider.MediaStore
 import android.util.Log
+import android.view.inputmethod.EditorInfo
+import android.widget.EditText
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.appcompat.app.AlertDialog
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import com.saoke.joyreader.api.Retrofit
@@ -46,6 +49,12 @@ class SettingsActivity : AppCompatActivity() {
 
         binding.avatar.setOnClickListener { applyPermission() }
         binding.avatarArrow.setOnClickListener { applyPermission() }
+
+        binding.username.setOnClickListener { showUpdateDialog(EditorInfo.TYPE_CLASS_TEXT) }
+        binding.usernameArrow.setOnClickListener { showUpdateDialog(EditorInfo.TYPE_CLASS_TEXT) }
+
+        binding.password.setOnClickListener { showUpdateDialog(EditorInfo.TYPE_TEXT_VARIATION_PASSWORD) }
+        binding.passwordArrow.setOnClickListener { showUpdateDialog(EditorInfo.TYPE_TEXT_VARIATION_PASSWORD) }
     }
 
     private fun applyPermission() {
@@ -147,5 +156,60 @@ class SettingsActivity : AppCompatActivity() {
                 openGallery()
             }
         }
+    }
+
+    private fun showUpdateDialog(inputType: Int) {
+        AlertDialog.Builder(this).apply {
+            setTitle(if (inputType == EditorInfo.TYPE_CLASS_TEXT) "修改用户名" else "修改密码")
+            val editText = EditText(context)
+            setView(editText)
+            setPositiveButton("确定") { _, _ ->
+                if (inputType == EditorInfo.TYPE_CLASS_TEXT) {
+                    updateUsername(editText.text.toString())
+                } else {
+                    updatePassword(editText.text.toString())
+                }
+            }
+            show()
+        }
+    }
+
+    private fun updateUsername(newUsername: String) {
+        Retrofit.api.updateUsername(newUsername).enqueue(object : Callback<Model<Void>> {
+            override fun onResponse(call: Call<Model<Void>>, response: Response<Model<Void>>) {
+                if (response.isSuccessful) {
+                    binding.username.text = newUsername
+                    Retrofit.getUser()
+                }
+                Toast.makeText(
+                    this@SettingsActivity,
+                    response.body()!!.base.message,
+                    Toast.LENGTH_SHORT
+                ).show()
+            }
+
+            override fun onFailure(call: Call<Model<Void>>, t: Throwable) {
+                Toast.makeText(this@SettingsActivity, t.message, Toast.LENGTH_SHORT).show()
+            }
+        })
+    }
+
+    private fun updatePassword(newPassword: String) {
+        Retrofit.api.updatePassword(newPassword).enqueue(object : Callback<Model<Void>> {
+            override fun onResponse(call: Call<Model<Void>>, response: Response<Model<Void>>) {
+                if (response.isSuccessful) {
+                    Retrofit.getUser()
+                }
+                Toast.makeText(
+                    this@SettingsActivity,
+                    response.body()!!.base.message,
+                    Toast.LENGTH_SHORT
+                ).show()
+            }
+
+            override fun onFailure(call: Call<Model<Void>>, t: Throwable) {
+                Toast.makeText(this@SettingsActivity, t.message, Toast.LENGTH_SHORT).show()
+            }
+        })
     }
 }

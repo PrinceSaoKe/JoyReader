@@ -48,7 +48,10 @@ class LoginFragment : Fragment() {
                         )
                         Toast.makeText(activity, model?.base?.message, Toast.LENGTH_SHORT)
                             .show()
-                        Retrofit.getUser()
+                        if (response.body()!!.base.code == 0) {
+                            Retrofit.getUser()
+                            activity!!.finish()
+                        }
                     } else {
                         Toast.makeText(activity, response.message(), Toast.LENGTH_SHORT).show()
                     }

@@ -13,6 +13,7 @@ import retrofit2.http.FormUrlEncoded
 import retrofit2.http.GET
 import retrofit2.http.Multipart
 import retrofit2.http.POST
+import retrofit2.http.PUT
 import retrofit2.http.Part
 import retrofit2.http.Query
 
@@ -57,6 +58,17 @@ interface Api {
     @GET("/user/get_user_likes")
     fun getLikeBlogList(): Call<Model<List<BlogModel>>>
 
+    /// 修改用户名
+    @PUT("/user/update_name")
+    @FormUrlEncoded
+    fun updateUsername(@Field("newName") newUsername: String): Call<Model<Void>>
+
+    /// 修改密码
+    @PUT("/user/update_password")
+    @FormUrlEncoded
+    fun updatePassword(@Field("newPassword") newPassword: String): Call<Model<Void>>
+
+    /// 修改头像
     @POST("/user/update_avatar")
     @Multipart
     fun updateAvatar(@Part file: MultipartBody.Part): Call<Model<String>>
