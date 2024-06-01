@@ -57,4 +57,5 @@ dependencies {
     implementation("com.tencent:mmkv:1.3.4")
     implementation("com.github.bumptech.glide:glide:5.0.0-rc01")
     implementation("io.noties.markwon:core:4.6.2")
+    implementation("io.noties.markwon:html:4.6.2")
 }
