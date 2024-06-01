@@ -25,7 +25,7 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
 
         val mmkvPath = MMKV.initialize(this)
-        Log.i("MyLog", "MMKV存储路径: $mmkvPath")
+        Log.i("JoyReader", "MMKV存储路径: $mmkvPath")
 
         initData()
 
@@ -60,15 +60,15 @@ class MainActivity : AppCompatActivity() {
                     if (userId != null) mmkv.encode("user_id", userId)
                     if (username != null) mmkv.encode("username", username)
                     if (avatarUrl != null) mmkv.encode("avatar_url", avatarUrl)
-                    Log.i("MyLog", "用户名：$username")
-                    Log.i("MyLog", "头像：$avatarUrl")
+                    Log.i("JoyReader", "用户名：$username")
+                    Log.i("JoyReader", "头像：$avatarUrl")
                 } else {
-                    Log.i("MyLog", "getUser：${response.code()}")
+                    Log.i("JoyReader", "getUser：${response.code()}")
                 }
             }
 
             override fun onFailure(call: Call<Model<UserModel>>, t: Throwable) {
-                Log.i("MyLog", "请求失败: ${t.message}")
+                Log.i("JoyReader", "请求失败: ${t.message}")
             }
         })
     }

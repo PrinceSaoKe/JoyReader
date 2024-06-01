@@ -130,12 +130,12 @@ class SettingsActivity : AppCompatActivity() {
                                             Toast.LENGTH_SHORT
                                         ).show()
                                     } else {
-                                        Log.i("MyLog", "updateAvatar：${response.code()}")
+                                        Log.i("JoyReader", "updateAvatar：${response.code()}")
                                     }
                                 }
 
                                 override fun onFailure(call: Call<Model<String>>, t: Throwable) {
-                                    Log.i("MyLog", "请求失败: ${t.message}")
+                                    Log.i("JoyReader", "请求失败: ${t.message}")
                                 }
                             })
                     }

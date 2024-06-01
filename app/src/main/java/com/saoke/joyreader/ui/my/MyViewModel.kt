@@ -70,14 +70,14 @@ class MyViewModel : ViewModel() {
             ) {
                 if (response.isSuccessful) {
                     userBlogList.value = response.body()!!.data!!
-                    Log.i("MyLog", userBlogList.value.toString())
+                    Log.i("JoyReader", userBlogList.value.toString())
                 } else {
-                    Log.i("MyLog", "getUserBlogList：${response.code()}")
+                    Log.i("JoyReader", "getUserBlogList：${response.code()}")
                 }
             }
 
             override fun onFailure(call: Call<Model<List<BlogModel>>>, t: Throwable) {
-                Log.i("MyLog", "请求失败: ${t.message}")
+                Log.i("JoyReader", "请求失败: ${t.message}")
             }
         })
     }
@@ -90,14 +90,14 @@ class MyViewModel : ViewModel() {
             ) {
                 if (response.isSuccessful) {
                     likeBlogList.value = response.body()!!.data!!
-                    Log.i("MyLog", likeBlogList.value.toString())
+                    Log.i("JoyReader", likeBlogList.value.toString())
                 } else {
-                    Log.i("MyLog", "getLikeBlogList：${response.code()}")
+                    Log.i("JoyReader", "getLikeBlogList：${response.code()}")
                 }
             }
 
             override fun onFailure(call: Call<Model<List<BlogModel>>>, t: Throwable) {
-                Log.i("MyLog", "请求失败: ${t.message}")
+                Log.i("JoyReader", "请求失败: ${t.message}")
             }
         })
     }

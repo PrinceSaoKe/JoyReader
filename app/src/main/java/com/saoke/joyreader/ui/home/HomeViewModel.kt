@@ -39,13 +39,13 @@ class HomeViewModel : ViewModel() {
                         hotBlogList.value = response.body()!!.data.articles
                         status.value = ViewModelStatusEnum.FINISHED
                     } else {
-                        Log.i("MyLog", "getHotBlogList：${response.code()}")
+                        Log.i("JoyReader", "getHotBlogList：${response.code()}")
                         status.value = ViewModelStatusEnum.ERROR
                     }
                 }
 
                 override fun onFailure(call: Call<Model<BlogListModel>>, t: Throwable) {
-                    Log.i("MyLog", "请求失败: ${t.message}")
+                    Log.i("JoyReader", "请求失败: ${t.message}")
                     status.value = ViewModelStatusEnum.ERROR
                 }
             })
@@ -60,12 +60,12 @@ class HomeViewModel : ViewModel() {
                     if (response.isSuccessful) {
                         latestBlogList.value = response.body()!!.data.articles
                     } else {
-                        Log.i("MyLog", "getLatestBlogList：${response.code()}")
+                        Log.i("JoyReader", "getLatestBlogList：${response.code()}")
                     }
                 }
 
                 override fun onFailure(call: Call<Model<BlogListModel>>, t: Throwable) {
-                    Log.i("MyLog", "请求失败: ${t.message}")
+                    Log.i("JoyReader", "请求失败: ${t.message}")
                 }
             })
     }

@@ -17,7 +17,7 @@ class Interceptor : Interceptor {
         val response = chain.proceed(request)
         if (response.code == 401) {
 //            val intent = Intent(context, AuthActivity::class.java)
-            Log.i("MyLog", "Token失效")
+            Log.i("JoyReader", "Token失效")
         }
         return response
     }

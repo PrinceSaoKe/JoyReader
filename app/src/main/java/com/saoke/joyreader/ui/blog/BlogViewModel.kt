@@ -22,12 +22,12 @@ class BlogViewModel : ViewModel() {
                 if (response.isSuccessful) {
                     blogModel.value = response.body()?.data
                 } else {
-                    Log.i("MyLog", "getBlog：${response.code()}")
+                    Log.i("JoyReader", "getBlog：${response.code()}")
                 }
             }
 
             override fun onFailure(call: Call<Model<BlogModel>>, t: Throwable) {
-                Log.i("MyLog", "getBlog请求失败: ${t.message}")
+                Log.i("JoyReader", "getBlog请求失败: ${t.message}")
             }
         })
     }
